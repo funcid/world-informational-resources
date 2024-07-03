@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  mysql_db:
+    image: mysql:latest
+    container_name: mysql_container
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: student_db
+      MYSQL_USER: student_user
+      MYSQL_PASSWORD: student_password
+    ports:
+      - "3306:3306"
+    volumes:
+      - data_db:/var/lib/mysql
+
+  php:
+    build: ./php
+    container_name: php_container
+    volumes:
+      - ./php:/var/www/html
+    ports:
+      - "8080:80"
+    depends_on:
+      - mysql_db
+
+volumes:
+  data_db:
